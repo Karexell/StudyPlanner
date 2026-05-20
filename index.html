@@ -280,14 +280,6 @@ body::before {
 
 .day-card:active { transform: scale(0.96); }
 
-.day-card.expanded {
-  grid-column: 1 / -1;
-  cursor: default;
-  text-align: left;
-}
-
-.day-card.expanded:hover { transform: none; }
-
 .day-number {
   font-size: 28px;
   font-weight: 700;
@@ -314,19 +306,6 @@ body::before {
 
 .pattern-a { background: rgba(0,122,255,0.12); color: var(--apple-blue); }
 .pattern-b { background: rgba(175,82,222,0.12); color: var(--apple-purple); }
-
-.day-close {
-  position: absolute; top: 12px; right: 12px;
-  width: 28px; height: 28px;
-  display: flex; align-items: center; justify-content: center;
-  background: rgba(0,0,0,0.06);
-  border: none; border-radius: 50%;
-  font-size: 16px; cursor: pointer;
-  color: var(--text-secondary);
-  transition: var(--transition);
-}
-
-.day-close:hover { background: rgba(0,0,0,0.1); }
 
 /* Task checklist inside expanded day card */
 .task-list {
@@ -704,6 +683,221 @@ body::before {
   0% { transform: translateY(0) rotate(0deg); opacity: 1; }
   100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
 }
+
+/* ═══════════════════════════════════════════════════════
+   SETTINGS PANEL
+   ═══════════════════════════════════════════════════════ */
+.settings-btn {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: var(--transition);
+  color: var(--text-primary);
+  -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
+}
+
+.settings-btn:hover { background: rgba(255,255,255,0.3); transform: rotate(30deg); }
+.settings-btn:active { transform: scale(0.9) rotate(30deg); }
+
+.settings-overlay {
+  display: none;
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 200;
+  justify-content: flex-end;
+  animation: fadeIn 0.25s ease;
+}
+
+.settings-overlay.show { display: flex; }
+
+.settings-panel {
+  width: 100%; max-width: 380px;
+  height: 100%;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border-left: 1px solid rgba(255,255,255,0.25);
+  padding: 28px 24px;
+  overflow-y: auto;
+  animation: settingsSlideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes settingsSlideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.settings-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.settings-header h3 {
+  font-size: 22px; font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.settings-close {
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.06);
+  border: none; border-radius: 50%;
+  font-size: 18px; cursor: pointer;
+  color: var(--text-secondary);
+  transition: var(--transition);
+}
+
+.settings-close:hover { background: rgba(0,0,0,0.1); }
+
+.settings-section {
+  margin-bottom: 28px;
+}
+
+.settings-section-title {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+}
+
+/* Background preset grid */
+.bg-presets {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.bg-preset {
+  aspect-ratio: 1.4;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.bg-preset:hover { transform: scale(1.05); }
+.bg-preset.active { border-color: var(--apple-blue); box-shadow: 0 0 0 2px rgba(0,122,255,0.3); }
+
+.bg-preset-check {
+  position: absolute; top: 4px; right: 4px;
+  width: 18px; height: 18px;
+  background: var(--apple-blue);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0;
+  transform: scale(0);
+  transition: var(--spring);
+}
+
+.bg-preset.active .bg-preset-check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Slider controls */
+.setting-row {
+  margin-bottom: 18px;
+}
+
+.setting-label {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 8px;
+}
+
+.setting-label span {
+  font-size: 14px; font-weight: 500;
+}
+
+.setting-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--apple-blue);
+  min-width: 36px;
+  text-align: right;
+}
+
+/* Custom range slider */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: rgba(0,0,0,0.08);
+  border-radius: 3px;
+  outline: none;
+  transition: var(--transition);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.04);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2), 0 0 0 1px rgba(0,0,0,0.04);
+}
+
+input[type="range"]::-webkit-slider-thumb:active {
+  transform: scale(0.95);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  cursor: pointer;
+  border: none;
+}
+
+/* Settings section dividers */
+.settings-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.15);
+  margin: 24px 0;
+}
+
+/* Reset button */
+.settings-reset {
+  width: 100%;
+  padding: 12px;
+  background: rgba(255,59,48,0.1);
+  border: 1px solid rgba(255,59,48,0.2);
+  border-radius: var(--radius-sm);
+  color: var(--apple-red);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: center;
+}
+
+.settings-reset:hover { background: rgba(255,59,48,0.18); }
+.settings-reset:active { transform: scale(0.97); }
+
+/* Dashboard settings button (on main page) */
+.dashboard-settings {
+  position: fixed;
+  top: 20px; right: 20px;
+  z-index: 50;
+}
 </style>
 </head>
 <body>
@@ -725,7 +919,17 @@ body::before {
     </button>
     <span class="nav-spacer"></span>
     <span class="nav-title" id="navTitle">Study Planner</span>
+    <button class="settings-btn" onclick="openSettings()" title="Settings">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
   </nav>
+
+  <!-- DASHBOARD SETTINGS BUTTON -->
+  <div class="dashboard-settings" id="dashSettingsWrap">
+    <button class="settings-btn" onclick="openSettings()" title="Settings">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
+  </div>
 
   <!-- DASHBOARD PAGE -->
   <div class="page active" id="pageDashboard">
@@ -786,6 +990,111 @@ body::before {
     <div class="modal-day-date" id="modalDayDate"></div>
     <div class="day-pattern" id="modalPattern"></div>
     <div class="task-list" id="modalTaskList"></div>
+  </div>
+</div>
+
+<!-- SETTINGS OVERLAY -->
+<div class="settings-overlay" id="settingsOverlay">
+  <div class="settings-panel">
+    <div class="settings-header">
+      <h3>Settings</h3>
+      <button class="settings-close" onclick="closeSettings()">&times;</button>
+    </div>
+
+    <!-- Background Presets -->
+    <div class="settings-section">
+      <div class="settings-section-title">Background</div>
+      <div class="bg-presets" id="bgPresets"></div>
+    </div>
+
+    <div class="settings-divider"></div>
+
+    <!-- Glass Controls -->
+    <div class="settings-section">
+      <div class="settings-section-title">Glass Effects</div>
+
+      <div class="setting-row">
+        <div class="setting-label">
+          <span>Card Transparency</span>
+          <span class="setting-value" id="cardAlphaVal">18%</span>
+        </div>
+        <input type="range" id="cardAlpha" min="0" max="50" value="18">
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-label">
+          <span>Button Transparency</span>
+          <span class="setting-value" id="btnAlphaVal">15%</span>
+        </div>
+        <input type="range" id="btnAlpha" min="0" max="50" value="15">
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-label">
+          <span>Blur Intensity</span>
+          <span class="setting-value" id="blurVal">20px</span>
+        </div>
+        <input type="range" id="blurIntensity" min="0" max="40" value="20">
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-label">
+          <span>Border Opacity</span>
+          <span class="setting-value" id="borderVal">35%</span>
+        </div>
+        <input type="range" id="borderOpacity" min="0" max="80" value="35">
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-label">
+          <span>Shadow Intensity</span>
+          <span class="setting-value" id="shadowVal">8%</span>
+        </div>
+        <input type="range" id="shadowIntensity" min="0" max="30" value="8">
+      </div>
+    </div>
+
+    <div class="settings-divider"></div>
+
+    <!-- Text -->
+    <div class="settings-section">
+      <div class="settings-section-title">Text</div>
+
+      <div class="setting-row">
+        <div class="setting-label">
+          <span>Text Brightness</span>
+          <span class="setting-value" id="textAlphaVal">85%</span>
+        </div>
+        <input type="range" id="textAlpha" min="40" max="100" value="85">
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-label">
+          <span>Secondary Text</span>
+          <span class="setting-value" id="textSecVal">55%</span>
+        </div>
+        <input type="range" id="textSec" min="20" max="80" value="55">
+      </div>
+    </div>
+
+    <div class="settings-divider"></div>
+
+    <!-- Border Radius -->
+    <div class="settings-section">
+      <div class="settings-section-title">Shape</div>
+
+      <div class="setting-row">
+        <div class="setting-label">
+          <span>Corner Radius</span>
+          <span class="setting-value" id="radiusVal">24px</span>
+        </div>
+        <input type="range" id="cornerRadius" min="0" max="40" value="24">
+      </div>
+    </div>
+
+    <div class="settings-divider"></div>
+
+    <button class="settings-reset" onclick="resetSettings()">Reset to Defaults</button>
   </div>
 </div>
 
@@ -897,14 +1206,28 @@ function getCompletedTasks(dayNum) {
 
 let currentPage = 'dashboard';
 let currentSubject = null;
+let navVersion = 0;
 
-function navigate(page, data) {
+function navigate(page, data, fromHash) {
+  // Skip if already on this page (prevents initial flash)
+  const pageMap = {
+    dashboard: 'pageDashboard',
+    tasks: 'pageTasks',
+    achievements: 'pageAchievements',
+    lesson: 'pageLesson'
+  };
+  const targetId = pageMap[page];
+  const targetPage = document.getElementById(targetId);
+  if (!targetPage) return;
+  if (page === currentPage && page !== 'lesson' && targetPage.classList.contains('active')) return;
+
+  // Cancel any pending navigation transitions
+  const myVersion = ++navVersion;
+
   // Deactivate current
   const oldPage = document.querySelector('.page.active');
-  if (oldPage) {
+  if (oldPage && oldPage !== targetPage) {
     oldPage.classList.remove('active');
-    oldPage.classList.add('entering');
-    setTimeout(() => oldPage.classList.remove('entering'), 50);
   }
 
   currentPage = page;
@@ -913,6 +1236,7 @@ function navigate(page, data) {
   // Update nav visibility
   const navBar = document.getElementById('navBar');
   navBar.style.display = page === 'dashboard' ? 'none' : 'flex';
+  document.getElementById('dashSettingsWrap').style.display = page === 'dashboard' ? 'block' : 'none';
 
   // Update nav active states
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -928,37 +1252,27 @@ function navigate(page, data) {
   };
   document.getElementById('navTitle').textContent = titles[page] || 'Study Planner';
 
-  // Show target page
-  const pageMap = {
-    dashboard: 'pageDashboard',
-    tasks: 'pageTasks',
-    achievements: 'pageAchievements',
-    lesson: 'pageLesson'
-  };
-
-  const targetPage = document.getElementById(pageMap[page]);
-  if (targetPage) {
-    // Small delay for transition
-    setTimeout(() => {
-      targetPage.classList.add('active');
-      // Stagger children
-      staggerChildren(targetPage);
-    }, 50);
-  }
-
-  // Render page content
+  // Render page content (before showing, to avoid flash)
   if (page === 'tasks') renderCalendar();
   if (page === 'achievements') renderAchievements();
   if (page === 'lesson') renderLessons(currentSubject);
 
+  // Show target page with entrance animation
+  setTimeout(() => {
+    if (navVersion !== myVersion) return; // superseded
+    targetPage.classList.add('active');
+    staggerChildren(targetPage);
+  }, 30);
+
   // Scroll to top
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  // Update hash
-  if (page === 'lesson') {
-    history.pushState(null, '', `#lesson/${currentSubject}`);
+  // Update hash (use replaceState when called from hashchange to avoid history loop)
+  const hash = page === 'lesson' ? `#lesson/${currentSubject}` : (page === 'dashboard' ? '#' : `#${page}`);
+  if (fromHash) {
+    history.replaceState(null, '', hash);
   } else {
-    history.pushState(null, '', page === 'dashboard' ? '#' : `#${page}`);
+    history.pushState(null, '', hash);
   }
 }
 
@@ -1200,14 +1514,14 @@ function handleHash() {
   if (hash.startsWith('lesson/')) {
     const subject = hash.split('/')[1];
     if (SUBJECTS[subject]) {
-      navigate('lesson', subject);
+      navigate('lesson', subject, true);
       return;
     }
   }
   if (['tasks', 'achievements'].includes(hash)) {
-    navigate(hash);
+    navigate(hash, null, true);
   } else {
-    navigate('dashboard');
+    navigate('dashboard', null, true);
   }
 }
 
@@ -1218,6 +1532,172 @@ window.addEventListener('hashchange', handleHash);
    ═══════════════════════════════════════════════════════ */
 
 handleHash();
+
+/* ═══════════════════════════════════════════════════════
+   SETTINGS
+   ═══════════════════════════════════════════════════════ */
+
+const BG_PRESETS = [
+  { name: 'Sunset', gradient: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 25%, #c2e9fb 50%, #a18cd1 75%, #fbc2eb 100%)' },
+  { name: 'Ocean', gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 30%, #6B8DD6 60%, #8E37D6 100%)' },
+  { name: 'Forest', gradient: 'linear-gradient(135deg, #11998e 0%, #38ef7d 50%, #2ed573 100%)' },
+  { name: 'Midnight', gradient: 'linear-gradient(135deg, #0c0c1d 0%, #1a1a3e 30%, #2d1b69 60%, #1a1a3e 100%)' },
+  { name: 'Rose', gradient: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fad0c4 100%)' },
+  { name: 'Arctic', gradient: 'linear-gradient(135deg, #e0eafc 0%, #cfdef3 50%, #a1c4fd 100%)' },
+  { name: 'Lavender', gradient: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 50%, #c2e9fb 100%)' },
+  { name: 'Ember', gradient: 'linear-gradient(135deg, #f12711 0%, #f5af19 50%, #ff6b6b 100%)' },
+  { name: 'Default', gradient: '' }
+];
+
+const DEFAULTS = {
+  bgPreset: 0,
+  cardAlpha: 18,
+  btnAlpha: 15,
+  blur: 20,
+  borderOpacity: 35,
+  shadowIntensity: 8,
+  textAlpha: 85,
+  textSec: 55,
+  cornerRadius: 24
+};
+
+function loadSettings() {
+  try {
+    return JSON.parse(localStorage.getItem('studyPlannerSettings')) || { ...DEFAULTS };
+  } catch { return { ...DEFAULTS }; }
+}
+
+function saveSettings(s) {
+  localStorage.setItem('studyPlannerSettings', JSON.stringify(s));
+}
+
+function applySettings(s) {
+  const root = document.documentElement;
+
+  // Background
+  if (s.bgPreset === BG_PRESETS.length - 1 || !BG_PRESETS[s.bgPreset].gradient) {
+    // Default animated mesh
+    document.body.style.background = '';
+    document.body.style.backgroundSize = '';
+    document.body.style.animation = '';
+    document.body.style.background = "linear-gradient(135deg, #ffecd2 0%, #fcb69f 25%, #c2e9fb 50%, #a18cd1 75%, #fbc2eb 100%)";
+    document.body.style.backgroundSize = '400% 400%';
+    document.body.style.animation = 'meshShift 20s ease infinite';
+  } else {
+    document.body.style.background = BG_PRESETS[s.bgPreset].gradient;
+    document.body.style.backgroundSize = '100% 100%';
+    document.body.style.animation = 'none';
+  }
+
+  // Glass vars
+  root.style.setProperty('--glass-bg', `rgba(255, 255, 255, ${s.cardAlpha / 100})`);
+  root.style.setProperty('--glass-border', `rgba(255, 255, 255, ${s.borderOpacity / 100})`);
+  root.style.setProperty('--glass-shadow', `0 8px 32px rgba(0, 0, 0, ${s.shadowIntensity / 100})`);
+  root.style.setProperty('--glass-blur', `${s.blur}px`);
+  root.style.setProperty('--radius-lg', `${s.cornerRadius}px`);
+
+  // Text — auto-detect dark backgrounds
+  const isDark = s.bgPreset === 3; // Midnight
+  const textBase = isDark ? 255 : 0;
+  root.style.setProperty('--text-primary', `rgba(${textBase}, ${textBase}, ${textBase}, ${s.textAlpha / 100})`);
+  root.style.setProperty('--text-secondary', `rgba(${textBase}, ${textBase}, ${textBase}, ${s.textSec / 100})`);
+  root.style.setProperty('--text-white', isDark ? '#ffffff' : '#ffffff');
+
+  // Nav bar buttons (use btnAlpha)
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.style.background = `rgba(255,255,255,${s.btnAlpha / 100})`;
+  });
+  document.querySelector('.nav-bar').style.background = `rgba(255,255,255,${Math.max(s.btnAlpha - 3, 0) / 100})`;
+
+  // Task items
+  document.querySelectorAll('.task-item').forEach(item => {
+    if (!item.classList.contains('completed')) {
+      item.style.background = `rgba(255,255,255,${s.btnAlpha / 100})`;
+    }
+  });
+}
+
+function initSettingsUI() {
+  const s = loadSettings();
+
+  // Render background presets
+  const presetsEl = document.getElementById('bgPresets');
+  presetsEl.innerHTML = '';
+  BG_PRESETS.forEach((preset, i) => {
+    const div = document.createElement('div');
+    div.className = `bg-preset${i === s.bgPreset ? ' active' : ''}`;
+    if (i === BG_PRESETS.length - 1) {
+      // "Default" = animated mesh preview
+      div.style.background = "linear-gradient(135deg, #ffecd2, #fcb69f, #c2e9fb, #a18cd1, #fbc2eb)";
+      div.style.backgroundSize = '400% 400%';
+      div.style.animation = 'meshShift 6s ease infinite';
+    } else {
+      div.style.background = preset.gradient;
+    }
+    div.innerHTML = '<div class="bg-preset-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>';
+    div.title = preset.name;
+    div.addEventListener('click', () => {
+      s.bgPreset = i;
+      saveSettings(s);
+      applySettings(s);
+      presetsEl.querySelectorAll('.bg-preset').forEach(p => p.classList.remove('active'));
+      div.classList.add('active');
+    });
+    presetsEl.appendChild(div);
+  });
+
+  // Sliders
+  const sliders = [
+    { id: 'cardAlpha',    key: 'cardAlpha',    valId: 'cardAlphaVal',  suffix: '%' },
+    { id: 'btnAlpha',     key: 'btnAlpha',     valId: 'btnAlphaVal',   suffix: '%' },
+    { id: 'blurIntensity', key: 'blur',        valId: 'blurVal',       suffix: 'px' },
+    { id: 'borderOpacity', key: 'borderOpacity', valId: 'borderVal',   suffix: '%' },
+    { id: 'shadowIntensity', key: 'shadowIntensity', valId: 'shadowVal', suffix: '%' },
+    { id: 'textAlpha',    key: 'textAlpha',    valId: 'textAlphaVal',  suffix: '%' },
+    { id: 'textSec',      key: 'textSec',      valId: 'textSecVal',    suffix: '%' },
+    { id: 'cornerRadius', key: 'cornerRadius', valId: 'radiusVal',     suffix: 'px' }
+  ];
+
+  sliders.forEach(({ id, key, valId, suffix }) => {
+    const input = document.getElementById(id);
+    const label = document.getElementById(valId);
+    input.value = s[key];
+    label.textContent = s[key] + suffix;
+
+    input.addEventListener('input', () => {
+      s[key] = parseInt(input.value);
+      label.textContent = s[key] + suffix;
+      saveSettings(s);
+      applySettings(s);
+    });
+  });
+
+  applySettings(s);
+}
+
+function openSettings() {
+  initSettingsUI();
+  document.getElementById('settingsOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSettings() {
+  document.getElementById('settingsOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+function resetSettings() {
+  localStorage.removeItem('studyPlannerSettings');
+  initSettingsUI();
+}
+
+// Close settings on overlay click
+document.getElementById('settingsOverlay').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeSettings();
+});
+
+// Apply saved settings on load
+applySettings(loadSettings());
 </script>
 
 </body>
