@@ -60,6 +60,11 @@ body::before {
     radial-gradient(ellipse at 70% 60%, rgba(194, 233, 251, 0.5) 0%, transparent 50%);
   animation: meshShift 25s ease infinite reverse;
   pointer-events: none; z-index: 0;
+  transition: opacity 0.5s ease;
+}
+
+body.custom-bg::before {
+  opacity: 0;
 }
 
 @keyframes meshShift {
@@ -1659,23 +1664,27 @@ function applySettings(s) {
 
   // Background
   if (s.bgPreset === imgPresetIdx && s.bgImage) {
-    // Custom image
+    // Custom image — hide overlay
     document.body.style.background = `url(${s.bgImage}) center/cover no-repeat`;
     document.body.style.animation = 'none';
-  } else if (s.bgPreset === defaultPresetIdx || (!BG_PRESETS[s.bgPreset].gradient && s.bgPreset !== imgPresetIdx)) {
-    // Default animated mesh
-    document.body.style.background = "linear-gradient(135deg, #ffecd2 0%, #fcb69f 25%, #c2e9fb 50%, #a18cd1 75%, #fbc2eb 100%)";
-    document.body.style.backgroundSize = '400% 400%';
-    document.body.style.animation = 'meshShift 20s ease infinite';
-  } else if (s.bgPreset === imgPresetIdx && !s.bgImage) {
-    // Image selected but no image uploaded yet
-    document.body.style.background = "linear-gradient(135deg, #ffecd2 0%, #fcb69f 25%, #c2e9fb 50%, #a18cd1 75%, #fbc2eb 100%)";
-    document.body.style.backgroundSize = '400% 400%';
-    document.body.style.animation = 'meshShift 20s ease infinite';
+    document.body.classList.add('custom-bg');
   } else {
-    document.body.style.background = BG_PRESETS[s.bgPreset].gradient;
-    document.body.style.backgroundSize = '100% 100%';
-    document.body.style.animation = 'none';
+    document.body.classList.remove('custom-bg');
+    if (s.bgPreset === defaultPresetIdx || (!BG_PRESETS[s.bgPreset].gradient && s.bgPreset !== imgPresetIdx)) {
+      // Default animated mesh
+      document.body.style.background = "linear-gradient(135deg, #ffecd2 0%, #fcb69f 25%, #c2e9fb 50%, #a18cd1 75%, #fbc2eb 100%)";
+      document.body.style.backgroundSize = '400% 400%';
+      document.body.style.animation = 'meshShift 20s ease infinite';
+    } else if (s.bgPreset === imgPresetIdx && !s.bgImage) {
+      // Image selected but no image uploaded yet
+      document.body.style.background = "linear-gradient(135deg, #ffecd2 0%, #fcb69f 25%, #c2e9fb 50%, #a18cd1 75%, #fbc2eb 100%)";
+      document.body.style.backgroundSize = '400% 400%';
+      document.body.style.animation = 'meshShift 20s ease infinite';
+    } else {
+      document.body.style.background = BG_PRESETS[s.bgPreset].gradient;
+      document.body.style.backgroundSize = '100% 100%';
+      document.body.style.animation = 'none';
+    }
   }
 
   // Glass vars
