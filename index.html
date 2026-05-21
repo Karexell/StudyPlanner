@@ -29,6 +29,10 @@
   --radius-xl: 32px;
   --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --spring: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --accent-r: 0; --accent-g: 122; --accent-b: 255;
+  --completion-r: 52; --completion-g: 199; --completion-b: 89;
+  --text-r: 0; --text-g: 0; --text-b: 0;
+  --textsec-r: 0; --textsec-g: 0; --textsec-b: 0;
 }
 
 html, body {
@@ -149,7 +153,7 @@ body.custom-bg::before {
 
 .nav-btn:hover { background: rgba(255,255,255,0.3); transform: translateY(-1px); }
 .nav-btn:active { transform: scale(0.97); }
-.nav-btn.active { background: rgba(0,122,255,0.15); border-color: rgba(0,122,255,0.3); color: var(--apple-blue); }
+.nav-btn.active { background: rgba(var(--accent-r),var(--accent-g),var(--accent-b),0.15); border-color: rgba(var(--accent-r),var(--accent-g),var(--accent-b),0.3); color: rgb(var(--accent-r),var(--accent-g),var(--accent-b)); }
 
 .nav-spacer { flex: 1; }
 
@@ -309,7 +313,7 @@ body.custom-bg::before {
   letter-spacing: 0.03em;
 }
 
-.pattern-a { background: rgba(0,122,255,0.12); color: var(--apple-blue); }
+.pattern-a { background: rgba(var(--accent-r),var(--accent-g),var(--accent-b),0.12); color: rgb(var(--accent-r),var(--accent-g),var(--accent-b)); }
 .pattern-b { background: rgba(175,82,222,0.12); color: var(--apple-purple); }
 
 /* Task checklist inside expanded day card */
@@ -330,7 +334,7 @@ body.custom-bg::before {
 }
 
 .task-item:hover { background: rgba(255,255,255,0.22); }
-.task-item.completed { background: rgba(52,199,89,0.1); border-color: rgba(52,199,89,0.25); }
+.task-item.completed { background: rgba(var(--completion-r),var(--completion-g),var(--completion-b),0.1); border-color: rgba(var(--completion-r),var(--completion-g),var(--completion-b),0.25); }
 
 .task-checkbox {
   width: 22px; height: 22px;
@@ -343,8 +347,8 @@ body.custom-bg::before {
 }
 
 .task-item.completed .task-checkbox {
-  background: var(--apple-green);
-  border-color: var(--apple-green);
+  background: rgb(var(--completion-r),var(--completion-g),var(--completion-b));
+  border-color: rgb(var(--completion-r),var(--completion-g),var(--completion-b));
 }
 
 .task-checkbox svg {
@@ -366,9 +370,9 @@ body.custom-bg::before {
 }
 
 .task-item.completed .task-label {
-  color: var(--apple-green);
+  color: rgb(var(--completion-r),var(--completion-g),var(--completion-b));
   text-decoration: line-through;
-  text-decoration-color: rgba(52,199,89,0.5);
+  text-decoration-color: rgba(var(--completion-r),var(--completion-g),var(--completion-b),0.5);
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -448,7 +452,7 @@ body.custom-bg::before {
 .progress-fill {
   height: 100%;
   border-radius: 3px;
-  background: var(--apple-green);
+  background: rgb(var(--completion-r),var(--completion-g),var(--completion-b));
   transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
 }
@@ -468,7 +472,7 @@ body.custom-bg::before {
   font-weight: 500;
 }
 
-.progress-pct { color: var(--apple-green); }
+.progress-pct { color: rgb(var(--completion-r),var(--completion-g),var(--completion-b)); }
 .progress-fraction { color: var(--text-secondary); }
 
 /* Subject color accents */
@@ -548,10 +552,10 @@ body.custom-bg::before {
 .lesson-box:active { transform: scale(0.92); }
 
 .lesson-box.completed {
-  background: var(--apple-green);
-  border-color: rgba(52,199,89,0.5);
+  background: rgb(var(--completion-r),var(--completion-g),var(--completion-b));
+  border-color: rgba(var(--completion-r),var(--completion-g),var(--completion-b),0.5);
   color: white;
-  box-shadow: 0 4px 16px rgba(52,199,89,0.3);
+  box-shadow: 0 4px 16px rgba(var(--completion-r),var(--completion-g),var(--completion-b),0.3);
 }
 
 .lesson-box .check-icon {
@@ -791,12 +795,12 @@ body.custom-bg::before {
 }
 
 .bg-preset:hover { transform: scale(1.05); }
-.bg-preset.active { border-color: var(--apple-blue); box-shadow: 0 0 0 2px rgba(0,122,255,0.3); }
+.bg-preset.active { border-color: rgb(var(--accent-r),var(--accent-g),var(--accent-b)); box-shadow: 0 0 0 2px rgba(var(--accent-r),var(--accent-g),var(--accent-b),0.3); }
 
 .bg-preset-check {
   position: absolute; top: 4px; right: 4px;
   width: 18px; height: 18px;
-  background: var(--apple-blue);
+  background: rgb(var(--accent-r),var(--accent-g),var(--accent-b));
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   opacity: 0;
@@ -812,7 +816,7 @@ body.custom-bg::before {
 /* Image upload */
 .bg-upload-area {
   margin-top: 12px;
-  border: 2px dashed rgba(0,122,255,0.3);
+  border: 2px dashed rgba(var(--accent-r),var(--accent-g),var(--accent-b),0.3);
   border-radius: var(--radius-sm);
   padding: 20px;
   text-align: center;
@@ -823,14 +827,14 @@ body.custom-bg::before {
 }
 
 .bg-upload-area:hover {
-  border-color: rgba(0,122,255,0.6);
-  background: rgba(0,122,255,0.05);
+  border-color: rgba(var(--accent-r),var(--accent-g),var(--accent-b),0.6);
+  background: rgba(var(--accent-r),var(--accent-g),var(--accent-b),0.05);
 }
 
 .bg-upload-area.has-image {
   padding: 0;
   border-style: solid;
-  border-color: var(--apple-blue);
+  border-color: rgb(var(--accent-r),var(--accent-g),var(--accent-b));
 }
 
 .bg-upload-area.has-image img {
@@ -900,7 +904,7 @@ body.custom-bg::before {
 .setting-value {
   font-size: 13px;
   font-weight: 600;
-  color: var(--apple-blue);
+  color: rgb(var(--accent-r),var(--accent-g),var(--accent-b));
   min-width: 36px;
   text-align: right;
 }
@@ -1242,6 +1246,20 @@ input[type="range"]::-moz-range-thumb {
         </div>
         <input type="range" id="textSec" min="20" max="80" value="55">
       </div>
+
+      <div class="setting-row">
+        <div class="setting-label">
+          <span>Primary Color</span>
+        </div>
+        <input type="color" id="textColor" value="#000000" style="width:100%;height:36px;border:none;border-radius:8px;cursor:pointer;background:transparent;padding:0;">
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-label">
+          <span>Secondary Color</span>
+        </div>
+        <input type="color" id="textSecColor" value="#000000" style="width:100%;height:36px;border:none;border-radius:8px;cursor:pointer;background:transparent;padding:0;">
+      </div>
     </div>
 
     <div class="settings-divider"></div>
@@ -1278,6 +1296,19 @@ input[type="range"]::-moz-range-thumb {
 
 <script>
 /* ═══════════════════════════════════════════════════════
+   HELPERS
+   ═══════════════════════════════════════════════════════ */
+
+function hexToRgb(hex) {
+  const h = hex.replace('#', '');
+  return {
+    r: parseInt(h.substring(0, 2), 16),
+    g: parseInt(h.substring(2, 4), 16),
+    b: parseInt(h.substring(4, 6), 16)
+  };
+}
+
+/* ═══════════════════════════════════════════════════════
    DATA & STATE
    ═══════════════════════════════════════════════════════ */
 
@@ -1302,7 +1333,7 @@ const TRANSLATIONS = {
     bgTitle: 'Background', uploadImage: 'Upload image', orTapBrowse: 'or tap to browse',
     glassTitle: 'Glass Effects', cardTrans: 'Card Transparency', btnTrans: 'Button Transparency',
     blurInt: 'Blur Intensity', borderOp: 'Border Opacity', shadowInt: 'Shadow Intensity',
-    textTitle: 'Text', textBright: 'Text Brightness', textSec: 'Secondary Text',
+    textTitle: 'Text', textBright: 'Text Brightness', textSec: 'Secondary Text', textColor: 'Primary Color', textSecColor: 'Secondary Color',
     shapeTitle: 'Shape', cornerRad: 'Corner Radius', langTitle: 'Language', resetBtn: 'Reset to Defaults',
     bgPresets: ['Sunset','Ocean','Forest','Midnight','Rose','Arctic','Lavender','Ember','Image','Default'],
     patternATasks: [
@@ -1330,7 +1361,7 @@ const TRANSLATIONS = {
     bgTitle: 'الخلفية', uploadImage: 'رفع صورة', orTapBrowse: 'أو اضغط للتصفح',
     glassTitle: 'تأثيرات الزجاج', cardTrans: 'شفافية البطاقات', btnTrans: 'شفافية الأزرار',
     blurInt: 'شدة الضبابية', borderOp: 'شفافية الحدود', shadowInt: 'شدة الظل',
-    textTitle: 'النص', textBright: 'سطوع النص', textSec: 'النص الثانوي',
+    textTitle: 'النص', textBright: 'سطوع النص', textSec: 'النص الثانوي', textColor: 'اللون الأساسي', textSecColor: 'اللون الثانوي',
     shapeTitle: 'الشكل', cornerRad: 'نصف قطر الزاوية', langTitle: 'اللغة', resetBtn: 'إعادة التعيين',
     bgPresets: ['غروب','محيط','غابة','منتصف الليل','وردي','قطبي','لافندر','جمرة','صورة','افتراضي'],
     patternATasks: [
@@ -1811,6 +1842,8 @@ const DEFAULTS = {
   shadowIntensity: 8,
   textAlpha: 85,
   textSec: 55,
+  textColor: '#000000',
+  textSecColor: '#000000',
   cornerRadius: 24,
   lang: 'en'
 };
@@ -1862,12 +1895,19 @@ function applySettings(s) {
   root.style.setProperty('--glass-blur', `${s.blur}px`);
   root.style.setProperty('--radius-lg', `${s.cornerRadius}px`);
 
-  // Text — auto-detect dark backgrounds
-  const isDark = s.bgPreset === 3; // Midnight
-  const textBase = isDark ? 255 : 0;
-  root.style.setProperty('--text-primary', `rgba(${textBase}, ${textBase}, ${textBase}, ${s.textAlpha / 100})`);
-  root.style.setProperty('--text-secondary', `rgba(${textBase}, ${textBase}, ${textBase}, ${s.textSec / 100})`);
-  root.style.setProperty('--text-white', isDark ? '#ffffff' : '#ffffff');
+  // Text — use user-chosen colors with brightness opacity
+  const tc = hexToRgb(s.textColor || '#000000');
+  root.style.setProperty('--text-r', tc.r);
+  root.style.setProperty('--text-g', tc.g);
+  root.style.setProperty('--text-b', tc.b);
+  root.style.setProperty('--text-primary', `rgba(${tc.r}, ${tc.g}, ${tc.b}, ${s.textAlpha / 100})`);
+
+  const tsc = hexToRgb(s.textSecColor || '#000000');
+  root.style.setProperty('--textsec-r', tsc.r);
+  root.style.setProperty('--textsec-g', tsc.g);
+  root.style.setProperty('--textsec-b', tsc.b);
+  root.style.setProperty('--text-secondary', `rgba(${tsc.r}, ${tsc.g}, ${tsc.b}, ${s.textSec / 100})`);
+  root.style.setProperty('--text-white', '#ffffff');
 
   // Nav bar buttons (use btnAlpha)
   document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -1942,6 +1982,8 @@ function applyTranslations() {
     { selector: '#shadowIntensity', key: 'shadowInt' },
     { selector: '#textAlpha', key: 'textBright' },
     { selector: '#textSec', key: 'textSec' },
+    { selector: '#textColor', key: 'textColor' },
+    { selector: '#textSecColor', key: 'textSecColor' },
     { selector: '#cornerRadius', key: 'cornerRad' }
   ];
   labelMap.forEach(({ selector, key }) => {
@@ -2051,6 +2093,17 @@ function initSettingsUI() {
     input.addEventListener('input', () => {
       s[key] = parseInt(input.value);
       label.textContent = s[key] + suffix;
+      saveSettings(s);
+      applySettings(s);
+    });
+  });
+
+  // Color pickers
+  ['textColor', 'textSecColor'].forEach(key => {
+    const input = document.getElementById(key);
+    input.value = s[key] || '#000000';
+    input.addEventListener('input', () => {
+      s[key] = input.value;
       saveSettings(s);
       applySettings(s);
     });
