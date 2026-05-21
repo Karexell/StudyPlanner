@@ -977,6 +977,89 @@ input[type="range"]::-moz-range-thumb {
   top: 20px; right: 20px;
   z-index: 50;
 }
+
+/* ═══════════════════════════════════════════════════════
+   LANGUAGE TOGGLE
+   ═══════════════════════════════════════════════════════ */
+.lang-toggle {
+  display: flex; gap: 8px;
+}
+
+.lang-btn {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.15);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.lang-btn:hover { background: rgba(255,255,255,0.25); }
+.lang-btn:active { transform: scale(0.97); }
+.lang-btn.active {
+  background: rgba(0,122,255,0.15);
+  border-color: rgba(0,122,255,0.3);
+  color: var(--apple-blue);
+  font-weight: 600;
+}
+
+/* ═══════════════════════════════════════════════════════
+   RTL SUPPORT
+   ═══════════════════════════════════════════════════════ */
+[dir="rtl"] .settings-panel {
+  border-left: none;
+  border-right: 1px solid rgba(255,255,255,0.25);
+  animation: settingsSlideInRtl 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+[dir="rtl"] .settings-overlay { justify-content: flex-start; }
+
+@keyframes settingsSlideInRtl {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+[dir="rtl"] .modal-close {
+  right: auto;
+  left: 16px;
+}
+
+[dir="rtl"] .dashboard-settings {
+  right: auto;
+  left: 20px;
+}
+
+[dir="rtl"] .bg-preset-check {
+  right: auto;
+  left: 4px;
+}
+
+[dir="rtl"] .bg-upload-remove {
+  right: auto;
+  left: 6px;
+}
+
+[dir="rtl"] .setting-value {
+  text-align: left;
+}
+
+[dir="rtl"] .progress-fill::after {
+  right: auto;
+  left: 0;
+  background: linear-gradient(-90deg, transparent, rgba(255,255,255,0.3));
+}
+
+[dir="rtl"] .nav-bar {
+  direction: rtl;
+}
+
+[dir="rtl"] .nav-spacer { flex: 1; }
 </style>
 </head>
 <body>
@@ -1178,7 +1261,18 @@ input[type="range"]::-moz-range-thumb {
 
     <div class="settings-divider"></div>
 
-    <button class="settings-reset" onclick="resetSettings()">Reset to Defaults</button>
+    <!-- Language -->
+    <div class="settings-section">
+      <div class="settings-section-title" data-i18n="langTitle">Language</div>
+      <div class="lang-toggle" id="langToggle">
+        <button class="lang-btn" data-lang="en">English</button>
+        <button class="lang-btn" data-lang="ar">العربية</button>
+      </div>
+    </div>
+
+    <div class="settings-divider"></div>
+
+    <button class="settings-reset" onclick="resetSettings()" data-i18n="resetBtn">Reset to Defaults</button>
   </div>
 </div>
 
@@ -1188,23 +1282,95 @@ input[type="range"]::-moz-range-thumb {
    ═══════════════════════════════════════════════════════ */
 
 const SUBJECTS = {
-  religion:   { name: 'Religion',     lessons: 40, color: '#AF52DE', icon: '&#x1F54A;' },
-  physics:    { name: 'Physics',      lessons: 21, color: '#007AFF', icon: '&#x269B;' },
-  math:       { name: 'Mathematics',  lessons: 24, color: '#FF9500', icon: '&#x1F4D0;' },
-  earth:      { name: 'Earth Science',lessons: 22, color: '#34C759', icon: '&#x1F30D;' }
+  religion:   { name: 'Religion',     nameAr: 'التربية الإسلامية', lessons: 40, color: '#AF52DE', icon: '&#x1F54A;' },
+  physics:    { name: 'Physics',      nameAr: 'الفيزياء',          lessons: 21, color: '#007AFF', icon: '&#x269B;' },
+  math:       { name: 'Mathematics',  nameAr: 'الرياضيات',        lessons: 24, color: '#FF9500', icon: '&#x1F4D0;' },
+  earth:      { name: 'Earth Science', nameAr: 'علوم الأرض',      lessons: 22, color: '#34C759', icon: '&#x1F30D;' }
 };
+
+const TRANSLATIONS = {
+  en: {
+    pageTitle: 'Study Planner', home: 'Home', tasks: 'Tasks', achievements: 'Achievements', settings: 'Settings',
+    dashTitle: 'Study Planner', dashSubtitle: 'Track your progress, ace your exams',
+    dashTasks: 'Daily Tasks', dashTasksDesc: '24 days of focused study, May 21 - June 13',
+    dashAchievements: 'Achievements', dashAchievementsDesc: 'Track lessons across 4 subjects',
+    tasksTitle: 'Daily Tasks', tasksSubtitle: 'May 21 - June 13 \u00b7 24 study days',
+    achTitle: 'Achievements', achSubtitle: 'Your progress across all subjects',
+    lessonsTotal: 'lessons total', completed: 'Completed', remaining: 'Remaining', progress: 'Progress',
+    tapLesson: 'Tap a lesson to mark it complete',
+    day: 'Day', pattern: 'Pattern', complete: 'Complete',
+    bgTitle: 'Background', uploadImage: 'Upload image', orTapBrowse: 'or tap to browse',
+    glassTitle: 'Glass Effects', cardTrans: 'Card Transparency', btnTrans: 'Button Transparency',
+    blurInt: 'Blur Intensity', borderOp: 'Border Opacity', shadowInt: 'Shadow Intensity',
+    textTitle: 'Text', textBright: 'Text Brightness', textSec: 'Secondary Text',
+    shapeTitle: 'Shape', cornerRad: 'Corner Radius', langTitle: 'Language', resetBtn: 'Reset to Defaults',
+    bgPresets: ['Sunset','Ocean','Forest','Midnight','Rose','Arctic','Lavender','Ember','Image','Default'],
+    patternATasks: [
+      { subject: 'Physics', task: 'Full Unit Study' },
+      { subject: 'Earth Science', task: '2 Lessons' },
+      { subject: 'Religion', task: '3 Lessons' }
+    ],
+    patternBTasks: [
+      { subject: 'Physics', task: 'Solving Questions' },
+      { subject: 'Earth Science', task: '3rd Lesson + Unit Questions' },
+      { subject: 'Religion', task: '3 Lessons' },
+      { subject: 'Mathematics', task: 'Solving Unit Questions' }
+    ]
+  },
+  ar: {
+    pageTitle: 'مخطط الدراسة', home: 'الرئيسية', tasks: 'المهام', achievements: 'الإنجازات', settings: 'الإعدادات',
+    dashTitle: 'مخطط الدراسة', dashSubtitle: 'تتبع تقدّمك، تفوّق في امتحاناتك',
+    dashTasks: 'المهام اليومية', dashTasksDesc: '24 يوم دراسة مركّزة، 21 مايو - 13 يونيو',
+    dashAchievements: 'الإنجازات', dashAchievementsDesc: 'تتبع الدروس عبر 4 مواد',
+    tasksTitle: 'المهام اليومية', tasksSubtitle: '21 مايو - 13 يونيو \u00b7 24 يوم دراسة',
+    achTitle: 'الإنجازات', achSubtitle: 'تقدّمك في جميع المواد',
+    lessonsTotal: 'درس إجمالاً', completed: 'مكتمل', remaining: 'متبقي', progress: 'التقدّم',
+    tapLesson: 'اضغط على الدرس لتحديد إكماله',
+    day: 'اليوم', pattern: 'النمط', complete: 'مكتمل',
+    bgTitle: 'الخلفية', uploadImage: 'رفع صورة', orTapBrowse: 'أو اضغط للتصفح',
+    glassTitle: 'تأثيرات الزجاج', cardTrans: 'شفافية البطاقات', btnTrans: 'شفافية الأزرار',
+    blurInt: 'شدة الضبابية', borderOp: 'شفافية الحدود', shadowInt: 'شدة الظل',
+    textTitle: 'النص', textBright: 'سطوع النص', textSec: 'النص الثانوي',
+    shapeTitle: 'الشكل', cornerRad: 'نصف قطر الزاوية', langTitle: 'اللغة', resetBtn: 'إعادة التعيين',
+    bgPresets: ['غروب','محيط','غابة','منتصف الليل','وردي','قطبي','لافندر','جمرة','صورة','افتراضي'],
+    patternATasks: [
+      { subject: 'الفيزياء', task: 'دراسة الوحدة كاملة' },
+      { subject: 'علوم الأرض', task: 'درسان' },
+      { subject: 'التربية الإسلامية', task: '3 دروس' }
+    ],
+    patternBTasks: [
+      { subject: 'الفيزياء', task: 'حل الأسئلة' },
+      { subject: 'علوم الأرض', task: 'الدرس الثالث + أسئلة الوحدة' },
+      { subject: 'التربية الإسلامية', task: '3 دروس' },
+      { subject: 'الرياضيات', task: 'حل أسئلة الوحدة' }
+    ]
+  }
+};
+
+function t(key) {
+  const s = loadSettings();
+  return TRANSLATIONS[s.lang || 'en'][key] || TRANSLATIONS.en[key];
+}
+
+function getSubjectName(key) {
+  const s = loadSettings();
+  const sub = SUBJECTS[key];
+  if (!sub) return key;
+  return (s.lang || 'en') === 'ar' ? sub.nameAr : sub.name;
+}
 
 // Generate 24 days: May 21 - June 13
 function generateDays() {
   const days = [];
   const startDate = new Date(2026, 4, 21); // May 21, 2026
+  const locale = (loadSettings().lang || 'en') === 'ar' ? 'ar' : 'en';
   for (let i = 0; i < 24; i++) {
     const d = new Date(startDate);
     d.setDate(d.getDate() + i);
     const dayNum = i + 1;
-    const month = d.toLocaleString('en', { month: 'short' });
+    const month = d.toLocaleString(locale, { month: 'short' });
     const dateNum = d.getDate();
-    const weekday = d.toLocaleString('en', { weekday: 'short' });
+    const weekday = d.toLocaleString(locale, { weekday: 'short' });
     days.push({
       dayNum,
       date: `${weekday}, ${month} ${dateNum}`,
@@ -1330,11 +1496,11 @@ function navigate(page, data, fromHash) {
 
   // Update nav title
   const titles = {
-    tasks: 'Daily Tasks',
-    achievements: 'Achievements',
-    lesson: SUBJECTS[currentSubject]?.name || 'Lesson'
+    tasks: t('tasksTitle'),
+    achievements: t('achTitle'),
+    lesson: getSubjectName(currentSubject)
   };
-  document.getElementById('navTitle').textContent = titles[page] || 'Study Planner';
+  document.getElementById('navTitle').textContent = titles[page] || t('pageTitle');
 
   // Render page content (before showing, to avoid flash)
   if (page === 'tasks') renderCalendar();
@@ -1393,8 +1559,8 @@ function renderCalendar() {
     card.innerHTML = `
       <div class="day-number">${day.dayNum}</div>
       <div class="day-date">${day.date}</div>
-      <div class="day-pattern pattern-${day.pattern.toLowerCase()}">Pattern ${day.pattern}</div>
-      ${allDone ? '<div style="margin-top:8px;font-size:13px;color:var(--apple-green);font-weight:600;">&#x2713; Complete</div>' : ''}
+      <div class="day-pattern pattern-${day.pattern.toLowerCase()}">${t('pattern')} ${day.pattern}</div>
+      ${allDone ? `<div style="margin-top:8px;font-size:13px;color:var(--apple-green);font-weight:600;">&#x2713; ${t('complete')}</div>` : ''}
     `;
 
     card.addEventListener('click', () => openDayModal(day));
@@ -1408,13 +1574,14 @@ function renderCalendar() {
 
 function openDayModal(day) {
   const overlay = document.getElementById('modalOverlay');
-  const tasks = day.pattern === 'A' ? PATTERN_A : PATTERN_B;
+  const lang = loadSettings().lang || 'en';
+  const tasks = day.pattern === 'A' ? TRANSLATIONS[lang].patternATasks : TRANSLATIONS[lang].patternBTasks;
 
-  document.getElementById('modalDayNum').textContent = `Day ${day.dayNum}`;
+  document.getElementById('modalDayNum').textContent = `${t('day')} ${day.dayNum}`;
   document.getElementById('modalDayDate').textContent = day.date;
 
   const patternEl = document.getElementById('modalPattern');
-  patternEl.textContent = `Pattern ${day.pattern}`;
+  patternEl.textContent = `${t('pattern')} ${day.pattern}`;
   patternEl.className = `day-pattern pattern-${day.pattern.toLowerCase()}`;
 
   const taskList = document.getElementById('modalTaskList');
@@ -1480,8 +1647,8 @@ function renderAchievements() {
     card.className = `subject-card glass subject-${key}`;
     card.innerHTML = `
       <div class="subject-icon">${subject.icon}</div>
-      <div class="subject-card-title">${subject.name}</div>
-      <div class="subject-card-count">${subject.lessons} lessons total</div>
+      <div class="subject-card-title">${getSubjectName(key)}</div>
+      <div class="subject-card-count">${subject.lessons} ${t('lessonsTotal')}</div>
       <div class="progress-track">
         <div class="progress-fill" style="width: ${pct}%"></div>
       </div>
@@ -1504,8 +1671,8 @@ function renderLessons(subject) {
   const sub = SUBJECTS[subject];
   if (!sub) return;
 
-  document.getElementById('lessonTitle').textContent = sub.name;
-  document.getElementById('lessonSubtitle').textContent = 'Tap a lesson to mark it complete';
+  document.getElementById('lessonTitle').textContent = getSubjectName(subject);
+  document.getElementById('lessonSubtitle').textContent = t('tapLesson');
 
   const completed = getCompletedLessons(subject);
   const pct = Math.round((completed / sub.lessons) * 100);
@@ -1514,15 +1681,15 @@ function renderLessons(subject) {
   summary.innerHTML = `
     <div class="lesson-stat">
       <div class="lesson-stat-value" style="color:${sub.color}">${completed}</div>
-      <div class="lesson-stat-label">Completed</div>
+      <div class="lesson-stat-label">${t('completed')}</div>
     </div>
     <div class="lesson-stat">
       <div class="lesson-stat-value">${sub.lessons - completed}</div>
-      <div class="lesson-stat-label">Remaining</div>
+      <div class="lesson-stat-label">${t('remaining')}</div>
     </div>
     <div class="lesson-stat">
       <div class="lesson-stat-value" style="color:var(--apple-green)">${pct}%</div>
-      <div class="lesson-stat-label">Progress</div>
+      <div class="lesson-stat-label">${t('progress')}</div>
     </div>
   `;
 
@@ -1644,7 +1811,8 @@ const DEFAULTS = {
   shadowIntensity: 8,
   textAlpha: 85,
   textSec: 55,
-  cornerRadius: 24
+  cornerRadius: 24,
+  lang: 'en'
 };
 
 function loadSettings() {
@@ -1715,6 +1883,99 @@ function applySettings(s) {
   });
 }
 
+function applyTranslations() {
+  const lang = loadSettings().lang || 'en';
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  document.title = t('pageTitle');
+
+  // Nav buttons
+  document.getElementById('navHome').lastChild.textContent = ' ' + t('home');
+  document.getElementById('navTasks').lastChild.textContent = ' ' + t('tasks');
+  document.getElementById('navAchievements').lastChild.textContent = ' ' + t('achievements');
+
+  // Dashboard
+  const greeting = document.querySelector('.dashboard-greeting');
+  if (greeting) {
+    greeting.childNodes[0].textContent = t('dashTitle') + '\n        ';
+    greeting.querySelector('span').textContent = t('dashSubtitle');
+  }
+  const dashCards = document.querySelectorAll('.dash-card');
+  if (dashCards[0]) {
+    dashCards[0].querySelector('.dash-card-title').textContent = t('dashTasks');
+    dashCards[0].querySelector('.dash-card-desc').textContent = t('dashTasksDesc');
+  }
+  if (dashCards[1]) {
+    dashCards[1].querySelector('.dash-card-title').textContent = t('dashAchievements');
+    dashCards[1].querySelector('.dash-card-desc').textContent = t('dashAchievementsDesc');
+  }
+
+  // Tasks page
+  const tasksH2 = document.querySelector('#pageTasks .tasks-header h2');
+  if (tasksH2) tasksH2.textContent = t('tasksTitle');
+  const tasksP = document.querySelector('#pageTasks .tasks-header p');
+  if (tasksP) tasksP.textContent = t('tasksSubtitle');
+
+  // Achievements page
+  const achH2 = document.querySelector('#pageAchievements .achievements-header h2');
+  if (achH2) achH2.textContent = t('achTitle');
+  const achP = document.querySelector('#pageAchievements .achievements-header p');
+  if (achP) achP.textContent = t('achSubtitle');
+
+  // Settings
+  const settingsTitle = document.querySelector('.settings-header h3');
+  if (settingsTitle) settingsTitle.textContent = t('settings');
+
+  // Settings section titles and labels
+  const sectionTitles = document.querySelectorAll('.settings-section-title');
+  const titleKeys = ['bgTitle', 'glassTitle', 'textTitle', 'shapeTitle', 'langTitle'];
+  sectionTitles.forEach((el, i) => {
+    if (titleKeys[i]) el.textContent = t(titleKeys[i]);
+  });
+
+  // Slider labels
+  const labelMap = [
+    { selector: '#cardAlpha', key: 'cardTrans' },
+    { selector: '#btnAlpha', key: 'btnTrans' },
+    { selector: '#blurIntensity', key: 'blurInt' },
+    { selector: '#borderOpacity', key: 'borderOp' },
+    { selector: '#shadowIntensity', key: 'shadowInt' },
+    { selector: '#textAlpha', key: 'textBright' },
+    { selector: '#textSec', key: 'textSec' },
+    { selector: '#cornerRadius', key: 'cornerRad' }
+  ];
+  labelMap.forEach(({ selector, key }) => {
+    const row = document.querySelector(`${selector}`)?.closest('.setting-row');
+    if (row) row.querySelector('.setting-label span:first-child').textContent = t(key);
+  });
+
+  // Upload area
+  const uploadText = document.querySelector('.bg-upload-text');
+  if (uploadText) uploadText.innerHTML = `<span>${t('uploadImage')}</span> ${t('orTapBrowse')}`;
+
+  // Reset button
+  const resetBtn = document.querySelector('.settings-reset');
+  if (resetBtn) resetBtn.textContent = t('resetBtn');
+
+  // Settings button titles
+  document.querySelectorAll('.settings-btn').forEach(btn => btn.title = t('settings'));
+
+  // Background preset titles
+  const presets = t('bgPresets');
+  document.querySelectorAll('.bg-preset').forEach((el, i) => {
+    if (presets && presets[i]) el.title = presets[i];
+  });
+
+  // Regenerate days with new locale
+  DAYS.length = 0;
+  generateDays().forEach(d => DAYS.push(d));
+
+  // Re-render current page
+  if (currentPage === 'tasks') renderCalendar();
+  if (currentPage === 'achievements') renderAchievements();
+  if (currentPage === 'lesson' && currentSubject) renderLessons(currentSubject);
+}
+
 function initSettingsUI() {
   const s = loadSettings();
   const imgPresetIdx = BG_PRESETS.findIndex(p => p.name === 'Image');
@@ -1742,7 +2003,7 @@ function initSettingsUI() {
       div.style.background = preset.gradient;
     }
     div.innerHTML += '<div class="bg-preset-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>';
-    div.title = preset.name;
+    div.title = (TRANSLATIONS[s.lang || 'en'].bgPresets || TRANSLATIONS.en.bgPresets)[i] || preset.name;
     div.addEventListener('click', () => {
       s.bgPreset = i;
       saveSettings(s);
@@ -1795,6 +2056,19 @@ function initSettingsUI() {
     });
   });
 
+  // Language toggle
+  const langBtns = document.querySelectorAll('.lang-btn');
+  langBtns.forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === (s.lang || 'en'));
+    btn.onclick = () => {
+      s.lang = btn.dataset.lang;
+      saveSettings(s);
+      langBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      applyTranslations();
+    };
+  });
+
   applySettings(s);
 }
 
@@ -1837,6 +2111,7 @@ function closeSettings() {
 function resetSettings() {
   localStorage.removeItem('studyPlannerSettings');
   initSettingsUI();
+  applyTranslations();
 }
 
 // Close settings on overlay click
@@ -1846,6 +2121,7 @@ document.getElementById('settingsOverlay').addEventListener('click', (e) => {
 
 // Apply saved settings on load
 applySettings(loadSettings());
+applyTranslations();
 </script>
 
 </body>
